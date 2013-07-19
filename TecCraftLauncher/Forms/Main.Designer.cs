@@ -55,7 +55,7 @@
             this.panel1.Controls.Add(this.splitContainer1);
             this.panel1.Location = new System.Drawing.Point(170, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(379, 384);
+            this.panel1.Size = new System.Drawing.Size(508, 460);
             this.panel1.TabIndex = 4;
             // 
             // splitContainer1
@@ -78,20 +78,22 @@
             // 
             this.splitContainer1.Panel2.BackgroundImage = global::TecCraftLauncher.Properties.Resources.bg;
             this.splitContainer1.Panel2.Controls.Add(this.panel2);
-            this.splitContainer1.Size = new System.Drawing.Size(379, 384);
-            this.splitContainer1.SplitterDistance = 298;
+            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
+            this.splitContainer1.Size = new System.Drawing.Size(508, 460);
+            this.splitContainer1.SplitterDistance = 400;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 0;
             // 
             // webBrowser1
             // 
+            this.webBrowser1.AllowWebBrowserDrop = false;
             this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
             this.webBrowser1.Location = new System.Drawing.Point(0, 69);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
             this.webBrowser1.ScriptErrorsSuppressed = true;
             this.webBrowser1.ScrollBarsEnabled = false;
-            this.webBrowser1.Size = new System.Drawing.Size(376, 226);
+            this.webBrowser1.Size = new System.Drawing.Size(508, 328);
             this.webBrowser1.TabIndex = 1;
             this.webBrowser1.Url = new System.Uri("http://teccraft.de/api/news.php", System.UriKind.Absolute);
             this.webBrowser1.Visible = false;
@@ -102,7 +104,7 @@
             // 
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::TecCraftLauncher.Properties.Resources.logo;
-            this.pictureBox1.Location = new System.Drawing.Point(39, 3);
+            this.pictureBox1.Location = new System.Drawing.Point(118, 0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(300, 75);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -118,15 +120,14 @@
             this.panel2.Controls.Add(this.tbPassword);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.button2);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Location = new System.Drawing.Point(137, -4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(379, 85);
+            this.panel2.Size = new System.Drawing.Size(367, 76);
             this.panel2.TabIndex = 6;
             // 
             // tbUsername
             // 
-            this.tbUsername.Location = new System.Drawing.Point(81, 17);
+            this.tbUsername.Location = new System.Drawing.Point(81, 4);
             this.tbUsername.Name = "tbUsername";
             this.tbUsername.Size = new System.Drawing.Size(187, 22);
             this.tbUsername.TabIndex = 8;
@@ -138,7 +139,7 @@
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.Transparent;
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(19, 50);
+            this.label2.Location = new System.Drawing.Point(19, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 11;
@@ -146,18 +147,19 @@
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(274, 45);
+            this.button1.Location = new System.Drawing.Point(274, 32);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(86, 22);
             this.button1.TabIndex = 6;
             this.button1.Text = "Anmelden";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tbPassword
             // 
-            this.tbPassword.Location = new System.Drawing.Point(81, 45);
+            this.tbPassword.Location = new System.Drawing.Point(81, 32);
             this.tbPassword.Name = "tbPassword";
             this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(187, 22);
@@ -169,7 +171,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(36, 22);
+            this.label1.Location = new System.Drawing.Point(36, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 10;
@@ -177,12 +179,13 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(274, 17);
+            this.button2.BackColor = System.Drawing.Color.Transparent;
+            this.button2.Location = new System.Drawing.Point(274, 4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(86, 22);
             this.button2.TabIndex = 7;
             this.button2.Text = "Einstellungen";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // updateController1
@@ -206,24 +209,23 @@
             // 
             // minecraftModelView1
             // 
-            this.minecraftModelView1.Location = new System.Drawing.Point(-92, -88);
+            this.minecraftModelView1.Location = new System.Drawing.Point(-92, -80);
             this.minecraftModelView1.Name = "minecraftModelView1";
             this.minecraftModelView1.RotationSpeed = 10;
-            this.minecraftModelView1.Size = new System.Drawing.Size(340, 490);
+            this.minecraftModelView1.Size = new System.Drawing.Size(340, 540);
             this.minecraftModelView1.Skin = null;
             this.minecraftModelView1.TabIndex = 3;
             this.minecraftModelView1.Text = "minecraftModelView1";
-            this.minecraftModelView1.Click += new System.EventHandler(this.minecraftModelView1_Click);
             // 
             // Main
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
+            this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = global::TecCraftLauncher.Properties.Resources.bg;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(545, 381);
+            this.ClientSize = new System.Drawing.Size(681, 462);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.minecraftModelView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;

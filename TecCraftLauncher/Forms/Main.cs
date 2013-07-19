@@ -10,6 +10,9 @@ using System.Net;
 using System.IO;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Core;
+using Microsoft.Win32;
+using System.Runtime.InteropServices;
+
 /*
  * TecCraftLauncher
  * Geschrieben 2011-2013 von Tobias Mädel (t.maedel@alfeld.de)
@@ -81,29 +84,84 @@ namespace TecCraftLauncher
         {
             WebClient wcJavaDLUrl = new WebClient();
             String JavaDLUrls = wcJavaDLUrl.DownloadString("http://tbspace.de/teccraft/javadl");
-            if (SystemInformation.GetArchitecture() == 64)
+            if (Program.UnixExecution)
             {
-                //64bit
-                String DLUrl = JavaDLUrls.Split('|')[1];
+                String DLUrl = JavaDLUrls.Split('|')[2];
                 diaJavaLoad javaload = new diaJavaLoad(DLUrl, 64);
                 javaload.ShowDialog();
                 javapath = "java";
-                Program.LocalConfig.IniWriteValue("Launcher", "javapath", javapath);
 
+                System.Diagnostics.Process prcWP = new System.Diagnostics.Process();
+                prcWP.StartInfo.FileName = "C:/windows/system32/winepath.exe";
+                prcWP.StartInfo.Arguments = "\"" + Application.StartupPath + "/java\"";
+                prcWP.StartInfo.CreateNoWindow = true;
+                prcWP.StartInfo.UseShellExecute = false;
+                prcWP.StartInfo.RedirectStandardOutput = true;
+                prcWP.Start();
+                prcWP.WaitForExit();
+                String javapth = prcWP.StandardOutput.ReadToEnd();
+
+
+                System.Diagnostics.Process prcCH = new System.Diagnostics.Process();
+                prcCH.StartInfo.FileName = "/bin/sh";
+                prcCH.StartInfo.Arguments = "-c \"chmod -R 777 \"" + javapth+"\"\"";
+                prcCH.StartInfo.CreateNoWindow = true;
+                prcCH.StartInfo.UseShellExecute = false;
+                prcCH.StartInfo.RedirectStandardOutput = true;
+                prcCH.Start();
+       
+
+                Program.LocalConfig.IniWriteValue("Launcher", "javapath", javapth);
             }
             else
             {
-                //32bit
-                String DLUrl = JavaDLUrls.Split('|')[0];
-                diaJavaLoad javaload = new diaJavaLoad(DLUrl, 32);
-                javaload.ShowDialog();
-                javapath = "java";
-                Program.LocalConfig.IniWriteValue("Launcher", "javapath", javapath);
-          
+                if (SystemInformation.GetArchitecture() == 64)
+                {
+                    //64bit
+                    String DLUrl = JavaDLUrls.Split('|')[1];
+                    diaJavaLoad javaload = new diaJavaLoad(DLUrl, 64);
+                    javaload.ShowDialog();
+                    javapath = "java";
+                    Program.LocalConfig.IniWriteValue("Launcher", "javapath", javapath);
+
+                }
+                else
+                {
+                    //32bit
+                    String DLUrl = JavaDLUrls.Split('|')[0];
+                    diaJavaLoad javaload = new diaJavaLoad(DLUrl, 32);
+                    javaload.ShowDialog();
+                    javapath = "java";
+                    Program.LocalConfig.IniWriteValue("Launcher", "javapath", javapath);
+
+                }
             }
+           
         }
+
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd,
+                         int Msg, int wParam, int lParam);
+        [DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        void MainFormMouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+
+        }
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            minecraftModelView1.MouseDown += MainFormMouseDown;
             if (Program.LocalConfig.IniReadValue("Launcher", "javapath") == "") //Ist schon ein Pfad zu Java bekannt? 
             {
                 //Nein. Such einen.
@@ -118,23 +176,38 @@ namespace TecCraftLauncher
                 }
             }
 
-            updateController1.checkForUpdates();
-            if (updateController1.currentUpdateResult.UpdatesAvailable)
+            try
             {
-                updateController1.updateInteractive();
+                updateController1.checkForUpdates();
+                if (updateController1.currentUpdateResult.UpdatesAvailable)
+                {
+                    updateController1.updateInteractive();
 
-                Opacity = 0; //Schönheitsfehler - Flackert kurz auf.
-                Application.Exit();
+                    Opacity = 0; //Schönheitsfehler - Flackert kurz auf.
+                    Application.Exit();
+                }
             }
-
+            catch (Exception)
+            {
+                
+            } 
             //Erstmal Steve =)
             ShowSkin(Program.LocalConfig.IniReadValue("Launcher", "username"));
+
+       
             if (Program.LocalConfig.IniReadValue("Launcher", "username")  != "steve")
             {
                 tbUsername.Text = Program.LocalConfig.IniReadValue("Launcher", "username");
             }
             tbPassword.Text = Program.LocalConfig.IniReadValue("Launcher", "password");
-            
+
+            if (Program.UnixExecution == true)
+            {
+                minecraftModelView1.Visible = false;
+                button1.BackColor = Color.White;
+                button2.BackColor = Color.White;
+            }
+           
         }
 
         private void DownloadCompleted(Object sender, DownloadDataCompletedEventArgs e)
@@ -143,7 +216,7 @@ namespace TecCraftLauncher
             if (e.Error != null) //Hoppla. 
             {
                 //Spieler hat keinen Skin -> Steve.
-                minecraftModelView1.Skin = TecCraftLauncher.Properties.Resources.stdchar;
+                minecraftModelView1.Skin = TecCraftLauncher.Properties.Resources.Char;
             }
             else
             {
@@ -171,7 +244,7 @@ namespace TecCraftLauncher
             catch (Exception ex)
             {
                 ex.ToString(); //nur damit ich keine Compile-Time-Warnung bekomme :D
-                minecraftModelView1.Skin = TecCraftLauncher.Properties.Resources.stdchar;
+                minecraftModelView1.Skin = TecCraftLauncher.Properties.Resources.Char;
             }
         }
 
@@ -198,7 +271,7 @@ namespace TecCraftLauncher
                 MessageBox.Show("Anmeldung fehlgeschlagen! \nDu hast Minecraft nicht gekauft!", "tecCraft Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            MessageBox.Show("Anmeldung fehlgeschlagen! \nAchte darauf dich mit deinem minecraft.net Account anzumelden.\nDie genaue Fehlermeldung lautet:\n\n" + reason, "tecCraft Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Anmeldung fehlgeschlagen! \nAchte darauf dich mit deinem minecraft.net/mojang.net Account anzumelden.\nDie genaue Fehlermeldung lautet:\n\n" + reason, "tecCraft Launcher", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
         AuthInformation _user;
         void mcauth_LoginSuceeded(AuthInformation user)
@@ -222,35 +295,47 @@ namespace TecCraftLauncher
             {
                 WebClient BronyWC = new WebClient();
                 BronyWC.Proxy = null;
-                if (bool.Parse(Program.LocalConfig.IniReadValue("Launcher", "pony")))
+                if (bool.Parse(Program.LocalConfig.IniReadValue("Mods", "pony")))
                 {
-                    BronyWC.DownloadStringAsync(new Uri("http://teccraft.de/api/20percentcooler.php?p=" + Program.LocalConfig.IniReadValue("Launcher", "password") + "&u=" + Program.LocalConfig.IniReadValue("Launcher", "username") + "&b=1"));
+                    BronyWC.DownloadStringAsync(new Uri("http://teccraft.de/api/20percentcooler.php?p=" + Program.LocalConfig.IniReadValue("Launcher", "password") + "&u=" + _user.caseCorrectUsername + "&b=1"));
                 }
                 else
                 {
-                    BronyWC.DownloadStringAsync(new Uri("http://teccraft.de/api/20percentcooler.php?p=" + Program.LocalConfig.IniReadValue("Launcher", "password") + "&u=" + Program.LocalConfig.IniReadValue("Launcher", "username") + "&b=0"));
+                    BronyWC.DownloadStringAsync(new Uri("http://teccraft.de/api/20percentcooler.php?p=" + Program.LocalConfig.IniReadValue("Launcher", "password") + "&u=" + _user.caseCorrectUsername + "&b=0"));
                 }
             }
             catch (Exception)
             { }
 
+            Invoke((MethodInvoker)delegate { InstallMods(); });
             Invoke((MethodInvoker)delegate { JavaTools.LaunchMinecraft(_user.caseCorrectUsername, _user.sessionId); });
-            Close();
-
-            //WebClient MCVersion = new WebClient();
-            //MCVersion.Proxy = null;
-            //MCVersion.DownloadStringCompleted += MCVersion_DownloadStringCompleted;
-            //MCVersion.DownloadStringAsync(new Uri("http://tbspace.de/teccraft/update/version"));
-
-          
-           
-            
+            Close();            
         }
-       
-
-     
-    
-
+        void InstallMod(String flag, String fileoff, String fileon)
+        {
+            if (Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", flag)))
+            {
+                if (!System.IO.File.Exists(fileon))
+                {
+                    System.IO.File.Copy(fileoff, fileon);
+                }
+            }
+            else
+            {
+                if (System.IO.File.Exists(fileon))
+                {
+                    System.IO.File.Delete(fileon);
+                }
+            }
+        }
+        void InstallMods()
+        {
+            InstallMod("pony"        , "bin_client\\mods\\mlp.off"         , "bin_client\\mods\\mlp.litemod");
+            InstallMod("minimap"     , "bin_client\\mods\\minimap.off"     , "bin_client\\mods\\minimap.zip");
+            InstallMod("nei"         , "bin_client\\coremods\\nei.off"     , "bin_client\\coremods\\nei.jar");
+            InstallMod("macro"       , "bin_client\\mods\\macro.off"       , "bin_client\\mods\\macro.litemod");
+            InstallMod("worldeditcui", "bin_client\\mods\\worldeditcui.off", "bin_client\\mods\\worldeditcui.litemod"); 
+        }
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             //Wenn die News fertig geladen sind, sie auch anzeigen...
@@ -283,12 +368,9 @@ namespace TecCraftLauncher
             diaSettings_ins.ShowDialog();
         }
 
-        private void minecraftModelView1_Click(object sender, EventArgs e)
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
 
         }
-
-
-
     }
 }

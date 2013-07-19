@@ -69,10 +69,10 @@
             this.label1.ForeColor = System.Drawing.Color.White;
             this.label1.Location = new System.Drawing.Point(12, 89);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(421, 60);
+            this.label1.Size = new System.Drawing.Size(349, 60);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Launcher by tobi31061\r\nGraphics by elomatreb\r\n\r\nThanks to nico_wi, Toble_Miner, D" +
-                "ampfhammer and Divinus01 for beta testing\r\n";
+            this.label1.Text = "Launcher by tobi31061\r\nGraphics by elomatreb\r\n\r\nThanks to nico_wi, Dampfhammer an" +
+    "d Divinus01 for beta testing\r\n";
             // 
             // label2
             // 

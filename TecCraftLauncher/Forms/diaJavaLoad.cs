@@ -27,7 +27,14 @@ namespace TecCraftLauncher
         
         private void diaJavaLoad_Load(object sender, EventArgs e)
         {
-            label1.Text = "Java für Windows - " + Arch.ToString() + " bit" ;
+            if (Program.UnixExecution)
+            {
+                label1.Text = "Java für Linux - " + Arch.ToString() + " bit";
+            }
+            else
+            {
+                label1.Text = "Java für Windows - " + Arch.ToString() + " bit";
+            }
 
             Application.DoEvents();
             

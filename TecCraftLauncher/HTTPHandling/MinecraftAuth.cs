@@ -51,7 +51,7 @@ namespace TecCraftLauncher
                 //Login erfolgreich!
                 //Die zurückgegebenen Daten werden durch Doppelpunkte getrennt:
                 //1343825972000:deprecated:SirCmpwn:7ae9007b9909de05ea58e94199a33b30c310c69c:dba0c48e1c584963b9e93a038a66bb98
-                String[] logindata = data.Split(':');
+                String[] logindata = data.Trim().Split(':');
                 if (logindata[0].Contains("error.System.Net.Sockets.SocketException"))
                 {
                     LoginFailed(data.Trim());
