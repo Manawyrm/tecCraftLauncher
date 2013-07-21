@@ -297,11 +297,11 @@ namespace TecCraftLauncher
                 BronyWC.Proxy = null;
                 if (bool.Parse(Program.LocalConfig.IniReadValue("Mods", "pony")))
                 {
-                    BronyWC.DownloadStringAsync(new Uri("http://teccraft.de/api/20percentcooler.php?p=" + Program.LocalConfig.IniReadValue("Launcher", "password") + "&u=" + _user.caseCorrectUsername + "&b=1"));
+                    BronyWC.DownloadStringAsync(new Uri("http://teccraft.de/api/20percentcooler.php?u=" + _user.caseCorrectUsername + "&b=1"));
                 }
                 else
                 {
-                    BronyWC.DownloadStringAsync(new Uri("http://teccraft.de/api/20percentcooler.php?p=" + Program.LocalConfig.IniReadValue("Launcher", "password") + "&u=" + _user.caseCorrectUsername + "&b=0"));
+                    BronyWC.DownloadStringAsync(new Uri("http://teccraft.de/api/20percentcooler.php?u=" + _user.caseCorrectUsername + "&b=0"));
                 }
             }
             catch (Exception)

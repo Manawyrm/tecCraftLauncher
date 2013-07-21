@@ -145,6 +145,7 @@
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(299, 133);
             this.checkedListBox1.TabIndex = 0;
+            this.checkedListBox1.UseCompatibleTextRendering = true;
             // 
             // tabPage2
             // 
@@ -190,6 +191,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button3.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button3.Location = new System.Drawing.Point(261, 210);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
@@ -200,8 +202,10 @@
             // 
             // diaSettings
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.button3;
             this.ClientSize = new System.Drawing.Size(346, 245);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.tabControl1);
@@ -209,6 +213,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "diaSettings";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "tecCraft Einstellungen";
             this.Load += new System.EventHandler(this.diaSettings_Load);
             this.tabControl1.ResumeLayout(false);

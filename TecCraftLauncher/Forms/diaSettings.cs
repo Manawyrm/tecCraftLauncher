@@ -19,14 +19,14 @@ namespace TecCraftLauncher
 
         private void diaSettings_Load(object sender, EventArgs e)
         {
-           javapath.Text =  Program.LocalConfig.IniReadValue("Launcher", "javapath");
-           ipv6enable.Checked = !Convert.ToBoolean(Program.LocalConfig.IniReadValue("Launcher", "ipv6"));
+            javapath.Text = Program.LocalConfig.IniReadValue("Launcher", "javapath");
+            ipv6enable.Checked = !Convert.ToBoolean(Program.LocalConfig.IniReadValue("Launcher", "ipv6"));
 
-           checkedListBox1.SetItemChecked(0, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "pony")));
-           checkedListBox1.SetItemChecked(1, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "nei")));
-           checkedListBox1.SetItemChecked(2, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "minimap")));
-           checkedListBox1.SetItemChecked(3, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "macro")));
-           checkedListBox1.SetItemChecked(4, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "worldeditcui")));
+            checkedListBox1.SetItemChecked(0, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "pony")));
+            checkedListBox1.SetItemChecked(1, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "nei")));
+            checkedListBox1.SetItemChecked(2, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "minimap")));
+            checkedListBox1.SetItemChecked(3, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "macro")));
+            checkedListBox1.SetItemChecked(4, Convert.ToBoolean(Program.LocalConfig.IniReadValue("Mods", "worldeditcui")));
         }
 
         private void button2_Click(object sender, EventArgs e)
